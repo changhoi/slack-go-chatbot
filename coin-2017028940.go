@@ -82,7 +82,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	ticker := time.NewTicker(time.Second * 10)
+	ticker := time.NewTicker(time.Minute)
 	file, err := os.Create("result.csv")
 	checkError("Cannot create file", err)
 	defer file.Close()
