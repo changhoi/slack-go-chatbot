@@ -52,4 +52,10 @@
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
   </component>
+  <component name="WindowStateProjectService">
+    <state x="631" y="369" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602695413704">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="631" y="369" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1792.1120@0.0.1792.1120" timestamp="1602695413704" />
+  </component>
 </project>

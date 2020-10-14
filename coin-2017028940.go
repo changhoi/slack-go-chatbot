@@ -3,17 +3,16 @@ package main
 import (
 	"bytes"
 	"encoding/csv"
+	"github.com/joho/godotenv"
 	"log"
 	"os"
 )
+
 import "fmt"
 import "net/http"
 import "encoding/json"
 import "time"
 import "io/ioutil"
-
-const BITCOIN_URL = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,KRW"
-const SLACK_URL = "https://hooks.slack.com/services/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"
 
 type Bitcoin struct {
 	KRW float32
@@ -33,7 +32,8 @@ func checkError(message string, err error) {
 
 func getBitcoinData() (Bitcoin, error) {
 	var ret Bitcoin
-	resp, err := http.Get(BITCOIN_URL)
+	url := os.Getenv("BITCOIN_URL")
+	resp, err := http.Get(url)
 	if err != nil {
 		return ret, err
 	}
@@ -50,10 +50,11 @@ func getBitcoinData() (Bitcoin, error) {
 }
 
 func sendSlackMsg(msg string) {
+	url := os.Getenv("SLACK_URL")
 	slackMsg := SlackMsg{msg}
 	jsonBytes, err := json.Marshal(slackMsg)
 	reqBody := bytes.NewBufferString(string(jsonBytes))
-	slackRes, err := http.Post(SLACK_URL, "application/json", reqBody)
+	slackRes, err := http.Post(url, "application/json", reqBody)
 	if err != nil {
 		panic(err)
 	}
@@ -77,6 +78,10 @@ func writeDataIntoCsv(writer *csv.Writer, price string, date string) {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
 	ticker := time.NewTicker(time.Second * 10)
 	file, err := os.Create("result.csv")
 	checkError("Cannot create file", err)
